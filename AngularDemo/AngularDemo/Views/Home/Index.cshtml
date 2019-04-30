@@ -1,0 +1,155 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container" ng-controller="student-controller">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            Quản Lý Sinh Viên
+        </div>
+        <div class="panel-body">
+            <button type="button" class="btn btn-info"
+                    data-target="#AddNew" data-toggle="modal">
+                Thêm Sinh Viên
+            </button>
+            <br />
+        </div>
+        @*Records*@
+        <table class="table table-bordered">
+            <thead style="background-color:#ffd800;">
+                <tr>
+                    <th>Mã Sinh Viên</th>
+                    <th>Tên Sinh Viên</th>
+                    <th>Email</th>
+                    <th>Tên Nhóm</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="stu in Students">
+                    <td>{{stu.MaSV}}</td>
+                    <td>{{stu.TenSV}} </td>
+                    <td>{{stu.Email}}</td>
+                    <td>{{stu.TenNhom}}</td>
+                    <td style="width:200px;">
+                        <a href="#"
+                           class="btn btn-info"
+                           data-toggle="modal"
+                           data-target="#Update"
+                           ng-click="getForUpdate(stu)">
+                            Cập Nhật
+                        </a>
+                        <a href="#" class="btn btn-danger"
+                           id="btnDelete"
+                           data-toggle="modal"
+                           data-target="#deleteDialog"
+                           ng-click="getForDelete(stu)">
+                            Xóa
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    @*New record Modal addition..*@
+    <div class="modal" id="AddNew" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="text-info">Thêm</h3>
+                </div>
+                <div class="modal-body" style="margin-left:20px">
+                    <form class="form-horizontal" name="AddNewForm">
+                        <div class="form-group">
+                            <input class="form-control" readonly="readonly" name="MaSV" ng-model="MaSV" type="hidden" placeholder="" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label"> Tên Sinh Viên</label>
+                            <input class="form-control" name="TenSV" ng-model="TenSV" type="text" placeholder="" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label"> Email</label>
+                            <input class="form-control" name="Email" ng-model="Email" type="email" placeholder="" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label"> Tên Nhóm</label>
+                            <input class="form-control" name="TenNhom" ng-model="TenNhom" type="text" placeholder="" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnSave" data-dismiss="modal" ng-click="save()">Lưu</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="resetSave()">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" id="Update" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="text-info">Cập Nhật</h3>
+                </div>
+                <div class="modal-body" style="margin-left:20px">
+                    <form class="form-horizontal" name="UpdateStudent">
+                        <div class="form-group">
+                            <input class="form-control" readonly="readonly" name="MaSV" ng-model="UpdateMaSV" type="hidden" placeholder="" />
+                        </div>
+                        <div class="form-group">
+                            <label class="text-info">Tên Sinh Vien</label>
+                            <input class="form-control" name="TenSV" ng-model="UpdateTenSV" type="text" placeholder="" />
+                        </div>
+                        <div class="form-group">
+                            <label class="text-info">Email</label>
+                            <input class="form-control" name="Email" ng-model="UpdateEmail" type="email" placeholder="" />
+                        </div>
+                        <div class="form-group">
+                            <label class="text-info">Tên Nhóm</label>
+                            <input class="form-control" name="TenNhom" ng-model="UpdateTenNhom" type="text" placeholder="" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnUpdate" data-dismiss="modal" ng-click="update()">
+                        Cập Nhật
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" role="dialog" id="deleteDialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="text-info">Bạn muốn Xóa sinh viên này?</h3>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <p>Mã Sinh Viên : {{UpdateMaSV}}</p>
+                        <p>Tên Sinh Viên : {{UpdateTenSV}}</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="delete(UpdateMaSV)">Xóa</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Angular/Module.js"></script>    
+    <script src="~/Angular/Service.js"></script>
+    <script src="~/Angular/Controller.js"></script>
+}
+
